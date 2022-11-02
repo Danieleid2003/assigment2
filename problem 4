@@ -1,0 +1,64 @@
+#include <list>
+#include <iostream>
+#include <vector>
+#include <map>
+using namespace std;
+
+//implement a graph data structure in c++ using adjacency list
+//graph generic class
+template <typename T>
+class Graph
+{
+private:
+    //adjacency list
+    map<T, list<T>> adjList;
+
+public:
+//Required: vector of type T
+//Expected: constructs a new Graph object initializing the adjacency list
+    Graph(vector<T> vertices)
+    {
+        //add all vertices to the graph
+        for (T vertex : vertices)
+        {
+            adjList[vertex] = list<T>();
+        }
+    }
+    
+
+    //number of outgoing edges from a vertex
+    int numOutgoing(T vertex)
+    {
+        return adjList[vertex].size();
+    }
+
+    //Required: vertex must be in the graph
+    //Effects: returns a list of adjacent vertices
+    list<T> getAdjacent(T vertex)
+    {
+        return adjList[vertex];
+    }
+
+    //Required: nothing
+    //Effects: return true if the graph has a cycle and false otherwise
+    bool hasCycle()
+    {
+        map<T, bool> visited;
+        map<T, bool> inStack;
+
+        for (auto i : adjList)
+        {
+            T vertex = i.first;
+            if (!visited[vertex])
+            {
+                bool cyclePresent = hasCycleHelper(vertex, visited, inStack);
+                if (cyclePresent)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+};
